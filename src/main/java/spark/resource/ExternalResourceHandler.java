@@ -22,7 +22,6 @@ import java.net.MalformedURLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import spark.staticfiles.DirectoryTraversal;
 import spark.utils.Assert;
 
 /**
@@ -78,15 +77,7 @@ public class ExternalResourceHandler extends AbstractResourceHandler {
                 }
             }
 
-            if (resource != null && resource.exists()) {
-                DirectoryTraversal.protectAgainstForExternal(resource.getPath());
-                return resource;
-            } else {
-                return null;
-            }
-
-        } catch (DirectoryTraversal.DirectoryTraversalDetection directoryTraversalDetection) {
-            throw directoryTraversalDetection;
+            return (resource != null && resource.exists()) ? resource : null;
         } catch (Exception e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug(e.getClass().getSimpleName() + " when trying to get resource. " + e.getMessage());
